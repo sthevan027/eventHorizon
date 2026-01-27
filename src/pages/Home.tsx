@@ -3,70 +3,7 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import EventCard from '../components/EventCard'
 import { Search, MapPin, Calendar } from 'lucide-react'
-
-// Dados mockados de eventos
-const mockEvents = [
-  {
-    id: '1',
-    image: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800',
-    title: 'Neon Dreams Music Festival',
-    location: 'Parque Ibirapuera, São Paulo, SP',
-    date: '25 OUT',
-    price: 'A partir de R$ 250',
-    badge: '25 OUT',
-    badgeColor: 'blue' as const,
-  },
-  {
-    id: '2',
-    image: 'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=800',
-    title: 'Abstract Art Workshop',
-    location: 'Centro Cultural, Rio de Janeiro, RJ',
-    date: '10 OUT',
-    price: 'A partir de R$ 150',
-    badge: '10 OUT',
-    badgeColor: 'blue' as const,
-  },
-  {
-    id: '3',
-    image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800',
-    title: 'City Rooftop Party',
-    location: 'Rooftop Bar, São Paulo, SP',
-    date: '30 OUT',
-    price: 'A partir de R$ 180',
-    badge: '30 OUT',
-    badgeColor: 'blue' as const,
-  },
-  {
-    id: '4',
-    image: 'https://images.unsplash.com/photo-1478147427282-58a87a120781?w=800',
-    title: 'Jazz Night Experience',
-    location: 'Teatro Municipal, Belo Horizonte, MG',
-    date: '15 OUT',
-    price: 'A partir de R$ 120',
-    badge: '15 OUT',
-    badgeColor: 'blue' as const,
-  },
-  {
-    id: '5',
-    image: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800',
-    title: 'Tech Conference 2024',
-    location: 'Centro de Convenções, São Paulo, SP',
-    date: '20 OUT',
-    price: 'A partir de R$ 350',
-    badge: '20 OUT',
-    badgeColor: 'blue' as const,
-  },
-  {
-    id: '6',
-    image: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800',
-    title: 'Food & Wine Festival',
-    location: 'Parque Villa-Lobos, São Paulo, SP',
-    date: '28 OUT',
-    price: 'A partir de R$ 200',
-    badge: '28 OUT',
-    badgeColor: 'blue' as const,
-  },
-]
+import { events } from '../data/events'
 
 const categories = [
   { name: 'Concertos', count: 2 },
@@ -222,9 +159,37 @@ export default function Home() {
           {/* Events Grid */}
           <main className="flex-1">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {mockEvents.map((event) => (
-                <EventCard key={event.id} {...event} />
-              ))}
+              {events.map((event) => {
+                // Extrair dia do mês da data (formato: "25-27/10/2024" ou "15/10/2024")
+                const dateMatch = event.date.match(/(\d{1,2})(?:-\d{1,2})?\/\d{1,2}\/(\d{4})/)
+                const day = dateMatch ? dateMatch[1] : ''
+                
+                // Mapear mês numérico para abreviação
+                const monthMap: Record<string, string> = {
+                  '10': 'OUT',
+                  '11': 'NOV',
+                  '12': 'DEZ',
+                }
+                const monthNum = event.date.split('/')[1] || '10'
+                const month = monthMap[monthNum] || 'OUT'
+                
+                // Encontrar o menor preço
+                const minPrice = Math.min(...event.tickets.map((t) => t.price))
+                
+                return (
+                  <EventCard
+                    key={event.id}
+                    id={event.id}
+                    image={event.image}
+                    title={event.title}
+                    location={event.location}
+                    date={`${day} ${month}`}
+                    price={`A partir de R$ ${minPrice.toLocaleString('pt-BR')}`}
+                    badge={`${day} ${month}`}
+                    badgeColor="blue"
+                  />
+                )
+              })}
             </div>
             
             <div className="mt-8 text-center">
