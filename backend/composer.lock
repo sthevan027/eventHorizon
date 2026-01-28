@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7649da1e3e0f8fad888953eb259e42b7",
+    "content-hash": "0137ba90d23f12ab04ebba55ad817ebe",
     "packages": [
         {
             "name": "amphp/amp",
@@ -4771,6 +4771,45 @@
             "time": "2024-03-31T07:05:07+00:00"
         },
         {
+            "name": "mercadopago/dx-php",
+            "version": "3.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mercadopago/sdk-php.git",
+                "reference": "98a3f7da2f13d1e85b309441b2e45c07fa312bf4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mercadopago/sdk-php/zipball/98a3f7da2f13d1e85b309441b2e45c07fa312bf4",
+                "reference": "98a3f7da2f13d1e85b309441b2e45c07fa312bf4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.2"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.22",
+                "phpunit/phpunit": "^10.2",
+                "squizlabs/php_codesniffer": "3.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MercadoPago\\": "src/MercadoPago"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Mercado Pago PHP SDK",
+            "homepage": "https://github.com/mercadopago/sdk-php",
+            "support": {
+                "source": "https://github.com/mercadopago/sdk-php/tree/3.8.0"
+            },
+            "time": "2025-11-28T14:17:27+00:00"
+        },
+        {
             "name": "monolog/monolog",
             "version": "3.9.0",
             "source": {
@@ -7236,16 +7275,16 @@
         },
         {
             "name": "spatie/icalendar-generator",
-            "version": "3.0.0",
+            "version": "3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/icalendar-generator.git",
-                "reference": "32797f6e5afa3142d073f38d5f22ab377f4d8f90"
+                "reference": "d93aded27abaa1b1e5f1402c5423f5c61469581b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/icalendar-generator/zipball/32797f6e5afa3142d073f38d5f22ab377f4d8f90",
-                "reference": "32797f6e5afa3142d073f38d5f22ab377f4d8f90",
+                "url": "https://api.github.com/repos/spatie/icalendar-generator/zipball/d93aded27abaa1b1e5f1402c5423f5c61469581b",
+                "reference": "d93aded27abaa1b1e5f1402c5423f5c61469581b",
                 "shasum": ""
             },
             "require": {
@@ -7256,7 +7295,7 @@
                 "ext-json": "*",
                 "larapack/dd": "^1.1",
                 "nesbot/carbon": "^3.5",
-                "pestphp/pest": "^2.34",
+                "pestphp/pest": "^2.34 || ^3.0 || ^4.0",
                 "phpstan/phpstan": "^2.0",
                 "spatie/pest-plugin-snapshots": "^2.1"
             },
@@ -7289,9 +7328,9 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/icalendar-generator/issues",
-                "source": "https://github.com/spatie/icalendar-generator/tree/3.0.0"
+                "source": "https://github.com/spatie/icalendar-generator/tree/3.2.1"
             },
-            "time": "2025-04-17T14:50:03+00:00"
+            "time": "2026-01-05T15:01:46+00:00"
         },
         {
             "name": "spatie/laravel-data",
