@@ -157,7 +157,7 @@ class MercadoPagoPaymentCreationService
 
             return new CreatePaymentResponseDTO(
                 paymentId: (string) $preference->id,
-                initPoint: $preference->init_point,
+                init_point: $preference->init_point,
                 status: 'pending',
             );
         } catch (MPApiException $exception) {

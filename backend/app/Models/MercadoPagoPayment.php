@@ -1,0 +1,30 @@
+<?php
+
+namespace HiEvents\Models;
+
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class MercadoPagoPayment extends BaseModel
+{
+    use SoftDeletes;
+
+    protected function getTimestampsEnabled(): bool
+    {
+        return true;
+    }
+
+    protected function getCastMap(): array
+    {
+        return [
+            'metadata' => 'array',
+            'last_error' => 'array',
+            'amount_received' => 'integer',
+        ];
+    }
+
+    public function order(): BelongsTo
+    {
+        return $this->belongsTo(Order::class);
+    }
+}

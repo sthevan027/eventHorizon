@@ -154,6 +154,26 @@ export const orderClientPublic = {
         return response.data;
     },
 
+    createMercadoPagoPix: async (eventId: number, orderShortId: string) => {
+        const response = await publicApi.post<{
+            payment_id: string,
+            qr_code: string | null,
+            qr_code_base64: string | null,
+            ticket_url: string | null,
+            status: string,
+        }>(`events/${eventId}/order/${orderShortId}/mercadopago/pix`);
+        return response.data;
+    },
+
+    createMercadoPagoPreference: async (eventId: number, orderShortId: string) => {
+        const response = await publicApi.post<{
+            payment_id: string,
+            init_point: string,
+            status: string,
+        }>(`events/${eventId}/order/${orderShortId}/mercadopago/preference`);
+        return response.data;
+    },
+
     finaliseOrder: async (
         eventId: number,
         orderShortId: string,

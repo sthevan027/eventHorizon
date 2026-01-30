@@ -23,6 +23,7 @@ use HiEvents\Repository\Eloquent\EventSettingsRepository;
 use HiEvents\Repository\Eloquent\EventStatisticRepository;
 use HiEvents\Repository\Eloquent\ImageRepository;
 use HiEvents\Repository\Eloquent\InvoiceRepository;
+use HiEvents\Repository\Eloquent\MercadoPagoPaymentsRepository;
 use HiEvents\Repository\Eloquent\MessageRepository;
 use HiEvents\Repository\Eloquent\OrderApplicationFeeRepository;
 use HiEvents\Repository\Eloquent\OrderAuditLogRepository;
@@ -69,6 +70,7 @@ use HiEvents\Repository\Interfaces\EventSettingsRepositoryInterface;
 use HiEvents\Repository\Interfaces\EventStatisticRepositoryInterface;
 use HiEvents\Repository\Interfaces\ImageRepositoryInterface;
 use HiEvents\Repository\Interfaces\InvoiceRepositoryInterface;
+use HiEvents\Repository\Interfaces\MercadoPagoPaymentsRepositoryInterface;
 use HiEvents\Repository\Interfaces\MessageRepositoryInterface;
 use HiEvents\Repository\Interfaces\OrderApplicationFeeRepositoryInterface;
 use HiEvents\Repository\Interfaces\OrderAuditLogRepositoryInterface;
@@ -116,6 +118,7 @@ class RepositoryServiceProvider extends ServiceProvider
         QuestionRepositoryInterface::class => QuestionRepository::class,
         QuestionAnswerRepositoryInterface::class => QuestionAnswerRepository::class,
         StripePaymentsRepositoryInterface::class => StripePaymentsRepository::class,
+        MercadoPagoPaymentsRepositoryInterface::class => MercadoPagoPaymentsRepository::class,
         PromoCodeRepositoryInterface::class => PromoCodeRepository::class,
         MessageRepositoryInterface::class => MessageRepository::class,
         PasswordResetTokenRepositoryInterface::class => PasswordResetTokenRepository::class,

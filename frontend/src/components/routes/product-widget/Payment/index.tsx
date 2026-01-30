@@ -3,6 +3,7 @@ import {useNavigate, useParams} from "react-router";
 import {useGetEventPublic} from "../../../../queries/useGetEventPublic.ts";
 import {CheckoutContent} from "../../../layouts/Checkout/CheckoutContent";
 import {StripePaymentMethod} from "./PaymentMethods/Stripe";
+import {MercadoPagoPaymentMethod} from "./PaymentMethods/MercadoPago";
 import {OfflinePaymentMethod} from "./PaymentMethods/Offline";
 import {Event} from "../../../../types.ts";
 import {Button, Group, Text} from "@mantine/core";
@@ -27,23 +28,26 @@ const Payment = () => {
     const {data: order, isFetched: isOrderFetched} = useGetOrderPublic(eventId, orderShortId, ['event']);
     const isLoading = !isOrderFetched;
     const [isPaymentLoading, setIsPaymentLoading] = useState(false);
-    const [activePaymentMethod, setActivePaymentMethod] = useState<'STRIPE' | 'OFFLINE' | null>(null);
+    const [activePaymentMethod, setActivePaymentMethod] = useState<'STRIPE' | 'MERCADOPAGO' | 'OFFLINE' | null>(null);
     const [submitHandler, setSubmitHandler] = useState<(() => Promise<void>) | null>(null);
     const transitionOrderToOfflinePaymentMutation = useTransitionOrderToOfflinePaymentPublic();
 
     const isStripeEnabled = event?.settings?.payment_providers?.includes('STRIPE');
+    const isMercadoPagoEnabled = event?.settings?.payment_providers?.includes('MERCADOPAGO');
     const isOfflineEnabled = event?.settings?.payment_providers?.includes('OFFLINE');
 
     React.useEffect(() => {
         // Automatically set the first available payment method
         if (isStripeEnabled) {
             setActivePaymentMethod('STRIPE');
+        } else if (isMercadoPagoEnabled) {
+            setActivePaymentMethod('MERCADOPAGO');
         } else if (isOfflineEnabled) {
             setActivePaymentMethod('OFFLINE');
         } else {
             setActivePaymentMethod(null); // No methods available
         }
-    }, [isStripeEnabled, isOfflineEnabled]);
+    }, [isStripeEnabled, isMercadoPagoEnabled, isOfflineEnabled]);
 
     React.useEffect(() => {
         // Scroll to top when payment page loads
@@ -59,6 +63,8 @@ const Payment = () => {
 
     const handleSubmit = async () => {
         if (activePaymentMethod === 'STRIPE') {
+            handleParentSubmit();
+        } else if (activePaymentMethod === 'MERCADOPAGO') {
             handleParentSubmit();
         } else if (activePaymentMethod === 'OFFLINE') {
             setIsPaymentLoading(true);
@@ -102,34 +108,54 @@ const Payment = () => {
                     </div>
                 )}
 
+                {isMercadoPagoEnabled && (
+                    <div style={{display: activePaymentMethod === 'MERCADOPAGO' ? 'block' : 'none'}}>
+                        <MercadoPagoPaymentMethod enabled={true} setSubmitHandler={setSubmitHandler}/>
+                    </div>
+                )}
+
                 {isOfflineEnabled && (
                     <div style={{display: activePaymentMethod === 'OFFLINE' ? 'block' : 'none'}}>
                         <OfflinePaymentMethod event={event as Event}/>
                     </div>
                 )}
 
-                {(isStripeEnabled && isOfflineEnabled) && (
+                {(isStripeEnabled || isMercadoPagoEnabled || isOfflineEnabled) && (isStripeEnabled && isOfflineEnabled || isMercadoPagoEnabled && isOfflineEnabled || isStripeEnabled && isMercadoPagoEnabled) && (
                     <div className={classes.paymentMethodSelector}>
                         <Text size="sm" c="dimmed" className={classes.paymentMethodLabel}>
                             {t`Payment method`}
                         </Text>
                         <div className={classes.paymentMethodTabs}>
-                            <button
-                                type="button"
-                                className={`${classes.paymentMethodTab} ${activePaymentMethod === 'STRIPE' ? classes.active : ''}`}
-                                onClick={() => setActivePaymentMethod('STRIPE')}
-                            >
-                                <IconWallet size={18}/>
-                                <span>{t`Online`}</span>
-                            </button>
-                            <button
-                                type="button"
-                                className={`${classes.paymentMethodTab} ${activePaymentMethod === 'OFFLINE' ? classes.active : ''}`}
-                                onClick={() => setActivePaymentMethod('OFFLINE')}
-                            >
-                                <IconBuildingBank size={18}/>
-                                <span>{t`Offline`}</span>
-                            </button>
+                            {isStripeEnabled && (
+                                <button
+                                    type="button"
+                                    className={`${classes.paymentMethodTab} ${activePaymentMethod === 'STRIPE' ? classes.active : ''}`}
+                                    onClick={() => setActivePaymentMethod('STRIPE')}
+                                >
+                                    <IconWallet size={18}/>
+                                    <span>{t`Stripe`}</span>
+                                </button>
+                            )}
+                            {isMercadoPagoEnabled && (
+                                <button
+                                    type="button"
+                                    className={`${classes.paymentMethodTab} ${activePaymentMethod === 'MERCADOPAGO' ? classes.active : ''}`}
+                                    onClick={() => setActivePaymentMethod('MERCADOPAGO')}
+                                >
+                                    <IconWallet size={18}/>
+                                    <span>{t`PIX / Card`}</span>
+                                </button>
+                            )}
+                            {isOfflineEnabled && (
+                                <button
+                                    type="button"
+                                    className={`${classes.paymentMethodTab} ${activePaymentMethod === 'OFFLINE' ? classes.active : ''}`}
+                                    onClick={() => setActivePaymentMethod('OFFLINE')}
+                                >
+                                    <IconBuildingBank size={18}/>
+                                    <span>{t`Offline`}</span>
+                                </button>
+                            )}
                         </div>
                     </div>
                 )}
